@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Button x:Name="BT_COMPortVerbinden" Content="COMPort verbinden" HorizontalAlignment="Left" Margin="60,86,0,0" VerticalAlignment="Top" Width="145" Height="31" Click="BT_COMPortVerbinden_Click"/>
+        <Button x:Name="BT_COMPortTrennen" Content="COMPort trennen" HorizontalAlignment="Left" Margin="60,140,0,0" VerticalAlignment="Top" Width="145" Height="31" Click="BT_COMPortTrennen_Click"/>
+        <Button x:Name="BT_HS_HB" Content="Handshake/Hearthbeat" HorizontalAlignment="Left" Margin="60,194,0,0" VerticalAlignment="Top" Width="145" Height="31" Click="BT_HS_HB_Click"/>
+        <Button x:Name="BT_XBoxRead" Content="Controller lesen" HorizontalAlignment="Left" Margin="60,243,0,0" VerticalAlignment="Top" Width="145" Height="31" Click="BT_XBoxRead_Click"/>
+        <TextBox x:Name="TB_COMPort" HorizontalAlignment="Left" Height="17" Margin="257,90,0,0" TextWrapping="Wrap" Text="COMXY" VerticalAlignment="Top" Width="54"/>
+        <Label x:Name="Label_VerbindungsStatus" Content="Verbindungsstatus" HorizontalAlignment="Left" Margin="338,122,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Label_ArmingStatus" Content="Armingstatus" HorizontalAlignment="Left" Margin="338,176,0,0" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>
