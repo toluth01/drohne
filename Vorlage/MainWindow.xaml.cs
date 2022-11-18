@@ -196,6 +196,8 @@ namespace Vorlage
 
                     //AccsoryDesired setzen
 
+                    //Arming
+
                     if (myState.Gamepad.Buttons == GamepadButtonFlags.Start)
                     {
                         vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 3F");
@@ -204,6 +206,8 @@ namespace Vorlage
                     }
 
                     Thread.Sleep(20);
+
+                    //Disarming
 
                     if (myState.Gamepad.Buttons == GamepadButtonFlags.Back)
                     {
