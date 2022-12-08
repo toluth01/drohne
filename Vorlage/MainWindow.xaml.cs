@@ -161,6 +161,8 @@ namespace Vorlage
 
         private void ControllerFunktion()
         {
+            float threshold = 0.2f;
+
             int leftTrigger;
             int rightThumbX;
             int rightThumbY;
@@ -185,9 +187,16 @@ namespace Vorlage
             {
                 while (run)
                 {
+                    if (!XBox.IsConnected)
+                    {
+                        vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+                        return;
+                    }
+
                     //XBox Controller Auslesen
                     myState = XBox.GetState();
 
+                    
 
                     //linken Trigger Wert auslesen
                     leftTrigger = myState.Gamepad.LeftTrigger;
@@ -199,8 +208,24 @@ namespace Vorlage
 
                     leftTriggerf = leftTrigger / 255f;
                     rightThumbXf = rightThumbX / 32768f;
+                    leftThumbXf = leftThumbX / 32768f;
+                    leftThumbYf = leftThumbY / 32768f;
 
-                    
+                    if (Math.Abs(leftThumbXf) < threshold)
+                    {
+                        leftThumbXf = 0f;
+                    }
+
+                    if (Math.Abs(leftThumbYf) < threshold)
+                    {
+                        leftThumbYf = 0f;
+                    }
+
+                    if (Math.Abs(rightThumbXf) < threshold)
+                    {
+                        rightThumbXf = 0f;
+                    }
+
 
                     if (leftTriggerf == 0f)
                     {
@@ -213,12 +238,15 @@ namespace Vorlage
                     
                     Throttle = QuadroControl.KonvertiereFloatZuHexString(leftTriggerf);
                     Yaw = QuadroControl.KonvertiereFloatZuHexString(rightThumbXf);
+                    Roll = QuadroControl.KonvertiereFloatZuHexString(leftThumbXf);
+                    Pitch = QuadroControl.KonvertiereFloatZuHexString(leftThumbYf);
+
 
                     //ManualControlCommand UAVTalk-Nachricht erstellen (Throttle = -1f - mehrmals)
 
                     //WICHTIG: die nullen nach Throttle sind die werte für ROLL PITCH YAW COLLECTIVE THRUST. Müssen später ergänzt werden
 
-                    vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 " + Yaw + " 00 00 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+                    vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 " + Throttle + " " + Roll + " " + Pitch + " " + Yaw + " 00 00 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
 
                     //AccsoryDesired setzen
 
@@ -249,6 +277,7 @@ namespace Vorlage
             }
         }
 
+
         private void GUIArming (bool status)
         {
             if (!Dispatcher.CheckAccess())
@@ -269,5 +298,9 @@ namespace Vorlage
             }
         }
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ControllerThread.Abort();
+        }
     }
 }

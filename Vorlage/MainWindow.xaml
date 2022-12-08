@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vorlage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
     <Grid>
         <Button x:Name="BT_COMPortVerbinden" Content="COMPort verbinden" HorizontalAlignment="Left" Margin="60,86,0,0" VerticalAlignment="Top" Width="145" Height="31" Click="BT_COMPortVerbinden_Click"/>
         <Button x:Name="BT_COMPortTrennen" Content="COMPort trennen" HorizontalAlignment="Left" Margin="60,140,0,0" VerticalAlignment="Top" Width="145" Height="31" Click="BT_COMPortTrennen_Click"/>
