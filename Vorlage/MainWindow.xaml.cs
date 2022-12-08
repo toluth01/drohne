@@ -162,8 +162,22 @@ namespace Vorlage
         private void ControllerFunktion()
         {
             int leftTrigger;
+            int rightThumbX;
+            int rightThumbY;
+            int leftThumbX;
+            int leftThumbY;
+
             float leftTriggerf;
+            float rightThumbXf;
+            float rightThumbYf;
+            float leftThumbXf;
+            float leftThumbYf;
+
             string Throttle;
+            string Yaw;
+            string Roll;
+            string Pitch;
+
 
             bool run = true;
 
@@ -177,22 +191,34 @@ namespace Vorlage
 
                     //linken Trigger Wert auslesen
                     leftTrigger = myState.Gamepad.LeftTrigger;
+                    rightThumbX = myState.Gamepad.RightThumbX;
+                    leftThumbX = myState.Gamepad.LeftThumbX;
+                    leftThumbY = myState.Gamepad.LeftThumbY;
 
                     //Triggerwert veratbeiten - to float
+
                     leftTriggerf = leftTrigger / 255f;
+                    rightThumbXf = rightThumbX / 32768f;
+
+                    
 
                     if (leftTriggerf == 0f)
                     {
                         leftTriggerf = -1f;
                     }
-
+                    else
+                    {
+                        leftTriggerf = leftTriggerf * 0.4f + 0.6f;
+                    }
+                    
                     Throttle = QuadroControl.KonvertiereFloatZuHexString(leftTriggerf);
+                    Yaw = QuadroControl.KonvertiereFloatZuHexString(rightThumbXf);
 
                     //ManualControlCommand UAVTalk-Nachricht erstellen (Throttle = -1f - mehrmals)
 
                     //WICHTIG: die nullen nach Throttle sind die werte für ROLL PITCH YAW COLLECTIVE THRUST. Müssen später ergänzt werden
 
-                    vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+                    vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 " + Yaw + " 00 00 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
 
                     //AccsoryDesired setzen
 
