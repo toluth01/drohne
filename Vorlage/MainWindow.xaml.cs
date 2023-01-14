@@ -21,8 +21,7 @@ using System.Windows.Threading;
 
 using SharpDX;
 using SharpDX.XInput;
-
-
+using System.Xml.Serialization;
 
 namespace Vorlage
 {
@@ -93,11 +92,15 @@ namespace Vorlage
             //COMPort verbinden
             if (vmyQC.vVerbinde(COMPortName))
             {
+                TB_COMPort.Text = TB_COMPort.Text + " verbunden";
+                //TB_COMPort.FontStyle = new FontStyle(FontStyles.Normal);
                 Label_VerbindungsStatus.Content = "COMPort verbunden";
+                TB_COMPort.Background = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
             }
             else
             {
                 Label_VerbindungsStatus.Content = "COMPort Verbindung FEHLGESCHLAGEN";
+                TB_COMPort.Background = new SolidColorBrush(Color.FromArgb(255, 212, 98, 98));
             }
 
 
@@ -108,10 +111,22 @@ namespace Vorlage
         {
             if (vmyQC.vVerbindungTrennen())
             {
+                TB_COMPort.Text = "COMPort getrennt";
                 Label_VerbindungsStatus.Content = "COMPort getrennt";
+                TB_COMPort.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+
+                Label_ArmingStatus.Content = "disarmed";
+                Label_ArmingStatus.Foreground = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                el_aussen.Stroke = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                el_innen.Fill = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+
+                BT_HS_HB.Background = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                BT_XBoxRead.Background = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+
             }
             else
             {
+                TB_COMPort.Text = "Trennung FEHLGESCHLAGEN";
                 Label_VerbindungsStatus.Content = "COMPort Trennung FEHLGESCHLAGEN";
             }
         }
@@ -129,12 +144,16 @@ namespace Vorlage
             //Heartbeat
             HeartbeatThread.Start();
 
+            BT_HS_HB.Background = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
+
         }
 
         private void BT_XBoxRead_Click(object sender, RoutedEventArgs e)
         {
             XBox = new Controller(UserIndex.One);
             ControllerThread.Start();
+
+            BT_XBoxRead.Background = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
         }
 
 
@@ -289,11 +308,17 @@ namespace Vorlage
             {
                 if (status)
                 {
-                    Label_ArmingStatus.Content = "GEARMED!";
+                    Label_ArmingStatus.Content = "armed";
+                    Label_ArmingStatus.Foreground = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
+                    el_aussen.Stroke = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
+                    el_innen.Fill = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
                 }
                 else
                 {
-                    Label_ArmingStatus.Content = "DISARMED!";
+                    Label_ArmingStatus.Content = "disarmed";
+                    Label_ArmingStatus.Foreground = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                    el_aussen.Stroke = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                    el_innen.Fill = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
                 }
             }
         }
@@ -301,6 +326,26 @@ namespace Vorlage
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ControllerThread.Abort();
+        }
+
+        private void TB_COMPort_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TB_COMPort.Text = "";
+        }
+
+        private void TB_COMPort_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TB_COMPort.Text = "";
+        }
+
+        private void TB_COMPort_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TB_COMPort.Text = "";
+        }
+
+        private void TB_COMPort_TouchDown(object sender, TouchEventArgs e)
+        {
+            TB_COMPort.Text = "";
         }
     }
 }
