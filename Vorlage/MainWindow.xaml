@@ -5,19 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vorlage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="573.8" Width="298" Closing="Window_Closing">
+        Title="MainWindow" Height="573.8" Width="931" Closing="Window_Closing">
     <Grid Width="298" Height="573" Margin="0,3,0,-18">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="35*"/>
-            <ColumnDefinition Width="263*"/>
+            <ColumnDefinition Width="135*"/>
+            <ColumnDefinition Width="129*"/>
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="BT_COMPortVerbinden" Content="Verbinden" HorizontalAlignment="Left" Margin="0,221,0,0" VerticalAlignment="Top" Width="100" Height="45" Click="BT_COMPortVerbinden_Click" Grid.Column="1" Background="#FF435159" BorderBrush="#FF435159" Foreground="#FFDFF3F4"/>
-        <Button x:Name="BT_COMPortTrennen" Content="Trennen" HorizontalAlignment="Left" Margin="120,221,0,0" VerticalAlignment="Top" Width="100" Height="45" Click="BT_COMPortTrennen_Click" Grid.Column="1" Background="#FF435159" BorderBrush="#FF435159" Foreground="#FFDFF3F4"/>
-        <Button x:Name="BT_HS_HB" Content="Controller verbinden" HorizontalAlignment="Left" Margin="0,333,0,0" VerticalAlignment="Top" Width="220" Height="45" Click="BT_HS_HB_Click" Grid.Column="1" Background="#FF435159" BorderBrush="#FF435159" Foreground="#FFDFF3F4"/>
-        <Button x:Name="BT_XBoxRead" Content="Controller lesen" HorizontalAlignment="Left" Margin="0,395,0,0" VerticalAlignment="Top" Width="220" Height="45" Click="BT_XBoxRead_Click" Grid.Column="1" Foreground="#FFDFF3F4" BorderBrush="#FF435159" Background="#FF435159"/>
-        <TextBox x:Name="TB_COMPort"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="45" Margin="0,160,0,0" TextWrapping="Wrap" Text="Bitte COM-Port eingeben ..." VerticalAlignment="Top" Width="220" Grid.Column="1" BorderBrush="#FF435159" Foreground="#FF2A353B" FontStyle="Italic" MouseLeftButtonDown="TB_COMPort_MouseLeftButtonDown" MouseDoubleClick="TB_COMPort_MouseDoubleClick" MouseDown="TB_COMPort_MouseDown" Background="#FFFFFF" TouchDown="TB_COMPort_TouchDown"/>
-        <Label x:Name="Label_VerbindungsStatus" Content="Verbindungsstatus" HorizontalAlignment="Left" Margin="0,582,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="145" Grid.Column="1" Height="26">
+        <Button x:Name="BT_COMPortVerbinden" Content="Verbinden" HorizontalAlignment="Left" Margin="-277,221,0,0" VerticalAlignment="Top" Width="100" Height="45" Click="BT_COMPortVerbinden_Click" Background="#FF435159" BorderBrush="#FF435159" Foreground="#FFDFF3F4"/>
+        <Button x:Name="BT_COMPortTrennen" Content="Trennen" HorizontalAlignment="Left" Margin="-157,221,0,0" VerticalAlignment="Top" Width="100" Height="45" Click="BT_COMPortTrennen_Click" Background="#FF435159" BorderBrush="#FF435159" Foreground="#FFDFF3F4"/>
+        <Button x:Name="BT_HS_HB" Content="Controller verbinden" HorizontalAlignment="Left" Margin="-277,333,0,0" VerticalAlignment="Top" Width="220" Height="45" Click="BT_HS_HB_Click" Background="#FF435159" BorderBrush="#FF435159" Foreground="#FFDFF3F4"/>
+        <Button x:Name="BT_XBoxRead" Content="Controller lesen" HorizontalAlignment="Left" Margin="-277,395,0,0" VerticalAlignment="Top" Width="220" Height="45" Click="BT_XBoxRead_Click" Foreground="#FFDFF3F4" BorderBrush="#FF435159" Background="#FF435159"/>
+        <TextBox x:Name="TB_COMPort"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="45" Margin="-277,160,0,0" TextWrapping="Wrap" Text="Bitte COM-Port eingeben ..." VerticalAlignment="Top" Width="220" BorderBrush="#FF435159" Foreground="#FF2A353B" FontStyle="Italic" MouseLeftButtonDown="TB_COMPort_MouseLeftButtonDown" MouseDoubleClick="TB_COMPort_MouseDoubleClick" MouseDown="TB_COMPort_MouseDown" Background="#FFFFFF" TouchDown="TB_COMPort_TouchDown"/>
+        <Label x:Name="Label_VerbindungsStatus" Content="Verbindungsstatus" HorizontalAlignment="Left" Margin="0,582,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="145" Grid.Column="1" Height="26" Grid.ColumnSpan="2">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="1"/>
@@ -27,7 +28,7 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <Label x:Name="Label_ArmingStatus" Content="disarmed" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="146,498,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="64" Grid.Column="1" FontWeight="Bold" Foreground="#FF435159" Height="29">
+        <Label x:Name="Label_ArmingStatus" Content="disarmed" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="-131,498,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Width="64" FontWeight="Bold" Foreground="#FF435159" Height="29">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="1"/>
@@ -37,12 +38,13 @@
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>
-        <Label x:Name="TB_DroneControl" Content="Drone Control" HorizontalAlignment="Left" VerticalAlignment="Top" Height="89" Width="298" FontSize="33" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FFDFF3F4" Grid.ColumnSpan="2" Margin="-12,0,0,0"/>
-        <TextBox TextWrapping="Wrap" Text="Trage den COM-Port deines OP-Link-Mini ein:" FontSize="12" Background="Transparent" Grid.Column="1" Margin="0,113,96,425" BorderBrush="#00ABADB3"/>
-        <TextBox TextWrapping="Wrap" Text="Schließe deinen Controller an und schalte ihn ein!" FontSize="12" Background="Transparent" Grid.Column="1" Margin="0,289,96,248" BorderBrush="#00ABADB3"/>
-        <TextBox TextWrapping="Wrap" Text="Drücke start, um das Arming der Drohne durchzuführen" FontSize="12" Background="Transparent" Grid.Column="1" Margin="0,467,135,44" BorderBrush="#00ABADB3"/>
-        <Ellipse x:Name="el_aussen" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="161,467,0,0" Stroke="#FF435159" StrokeThickness="2.3" VerticalAlignment="Top" Width="34"/>
-        <Ellipse x:Name="el_innen" Grid.Column="1" HorizontalAlignment="Left" Height="26" Margin="165,471,0,0" StrokeThickness="2.3" VerticalAlignment="Top" Width="26" Fill="White"/>
+        <Label x:Name="TB_DroneControl" Content="Drone Control" HorizontalAlignment="Left" VerticalAlignment="Top" Height="89" Width="298" FontSize="33" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="#FFDFF3F4" Margin="-312,-2,0,0"/>
+        <TextBox x:Name="TB_Hinweis" TextWrapping="Wrap" Text="Trage den COM-Port deines OP-Link-Mini ein:" FontSize="12" Background="Transparent" Margin="-277,113,145,425" BorderBrush="#00ABADB3"/>
+        <TextBox TextWrapping="Wrap" Text="Schließe deinen Controller an und schalte ihn ein!" FontSize="12" Background="Transparent" Margin="-277,289,145,248" BorderBrush="#00ABADB3"/>
+        <TextBox TextWrapping="Wrap" Text="Drücke start, um das Arming der Drohne durchzuführen" FontSize="12" Background="Transparent" Margin="-277,467,184,44" BorderBrush="#00ABADB3"/>
+        <Ellipse x:Name="el_aussen" HorizontalAlignment="Left" Height="34" Margin="-116,467,0,0" Stroke="#FF435159" StrokeThickness="2.3" VerticalAlignment="Top" Width="34"/>
+        <Ellipse x:Name="el_innen" HorizontalAlignment="Left" Height="26" Margin="-112,471,0,0" StrokeThickness="2.3" VerticalAlignment="Top" Width="26" Fill="White"/>
+        <Image Grid.ColumnSpan="3" Height="573" Width="633" Source="/Frame 8.png" Margin="-16,0,-319,0"/>
 
     </Grid>
 </Window>

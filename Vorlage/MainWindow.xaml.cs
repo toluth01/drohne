@@ -33,6 +33,7 @@ namespace Vorlage
     public delegate void DelString(string hexString);
 
     public delegate void GUIArmingDelType(bool status);
+    public delegate void GUINotAusDelType(bool status);
 
     public partial class MainWindow : Window
     {
@@ -53,6 +54,7 @@ namespace Vorlage
 
         //delegate object for GUIArming
         private GUIArmingDelType GuiArmingDel;
+        private GUINotAusDelType GuiNotAusDel;
 
         public MainWindow()
         {
@@ -68,6 +70,7 @@ namespace Vorlage
             ControllerThread = new Thread(ControllerFunktion);
 
             GuiArmingDel = GUIArming;
+            GuiNotAusDel= GUINotAus;
         }
 
         // NICHT ÄNDERN
@@ -123,6 +126,10 @@ namespace Vorlage
                 BT_HS_HB.Background = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
                 BT_XBoxRead.Background = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
 
+
+                // HeartbeatThread.Abort();
+               // ControllerThread.Abort();
+                
             }
             else
             {
@@ -142,7 +149,12 @@ namespace Vorlage
             vSchickeHexString("3c 20 12 00 5c 98 09 c4 00 00 41 00 d0 07 64 00 00 00");
 
             //Heartbeat
-            HeartbeatThread.Start();
+
+            if (HeartbeatThread.ThreadState == ThreadState.Unstarted)
+            {
+                HeartbeatThread.Start();
+            }
+            
 
             BT_HS_HB.Background = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
 
@@ -151,7 +163,12 @@ namespace Vorlage
         private void BT_XBoxRead_Click(object sender, RoutedEventArgs e)
         {
             XBox = new Controller(UserIndex.One);
-            ControllerThread.Start();
+
+            if (ControllerThread.ThreadState == ThreadState.Unstarted)
+            {
+                ControllerThread.Start();
+            }
+            
 
             BT_XBoxRead.Background = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98));
         }
@@ -182,12 +199,14 @@ namespace Vorlage
         {
             float threshold = 0.2f;
 
+            int rightTrigger;
             int leftTrigger;
             int rightThumbX;
             int rightThumbY;
             int leftThumbX;
             int leftThumbY;
 
+            float rightTriggerf;
             float leftTriggerf;
             float rightThumbXf;
             float rightThumbYf;
@@ -206,18 +225,23 @@ namespace Vorlage
             {
                 while (run)
                 {
+                    
                     if (!XBox.IsConnected)
                     {
                         vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+                        vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
+                        //Setze ArmingStatus auf GUI
+                        GUIArming(false);
                         return;
                     }
-
+                    
                     //XBox Controller Auslesen
                     myState = XBox.GetState();
 
-                    
+
 
                     //linken Trigger Wert auslesen
+                    rightTrigger = myState.Gamepad.RightTrigger;
                     leftTrigger = myState.Gamepad.LeftTrigger;
                     rightThumbX = myState.Gamepad.RightThumbX;
                     leftThumbX = myState.Gamepad.LeftThumbX;
@@ -225,6 +249,7 @@ namespace Vorlage
 
                     //Triggerwert veratbeiten - to float
 
+                    rightTriggerf = rightTrigger / 255f;
                     leftTriggerf = leftTrigger / 255f;
                     rightThumbXf = rightThumbX / 32768f;
                     leftThumbXf = leftThumbX / 32768f;
@@ -254,7 +279,22 @@ namespace Vorlage
                     {
                         leftTriggerf = leftTriggerf * 0.4f + 0.6f;
                     }
+
                     
+                    if (rightTriggerf == 0f)
+                    {
+                        rightTriggerf = -1f;
+                    }
+                    else
+                    {
+                        rightTriggerf = rightTriggerf * 0.4f + 0.6f;
+                    }
+
+                    if (rightTriggerf > leftTriggerf)
+                    {
+                        leftTriggerf = rightTriggerf;
+                    }
+
                     Throttle = QuadroControl.KonvertiereFloatZuHexString(leftTriggerf);
                     Yaw = QuadroControl.KonvertiereFloatZuHexString(rightThumbXf);
                     Roll = QuadroControl.KonvertiereFloatZuHexString(leftThumbXf);
@@ -282,11 +322,29 @@ namespace Vorlage
 
                     //Disarming
 
-                    if (myState.Gamepad.Buttons == GamepadButtonFlags.Back)
+                    if (myState.Gamepad.Buttons == GamepadButtonFlags.Back && leftTriggerf < threshold)
                     {
                         vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
                         //Setze ArmingStatus auf GUI
                         GUIArming(false);
+                    }
+
+
+                    // NOT-Aus
+
+                    if (myState.Gamepad.Buttons == GamepadButtonFlags.B)
+                    {
+                        vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+
+                        vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
+                        //Setze ArmingStatus auf GUI
+                        GUIArming(false);
+
+                        GUINotAus(true);
+
+                        HeartbeatThread.Abort();
+                        ControllerThread.Abort();
+                        
                     }
                 }
             }
@@ -323,9 +381,58 @@ namespace Vorlage
             }
         }
 
+
+        private void GUINotAus(bool status)
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Normal, GuiNotAusDel, status);
+                return;
+            }
+            else
+            {
+                if (status)
+                {
+                    TB_Hinweis.Text = "NOT-Aus ausgelöst!\nStarte die Anwendung neu!";
+                    //TB_COMPort.FontStyle = new FontStyle(FontStyles.Normal);
+                    TB_DroneControl.Content = "NOT-Aus";
+                    TB_DroneControl.Background = new SolidColorBrush(Color.FromArgb(255, 212, 98, 98));
+
+
+                    TB_COMPort.Text = "";
+                    Label_VerbindungsStatus.Content = "COMPort getrennt";
+                    TB_COMPort.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+
+                    Label_ArmingStatus.Content = "disarmed";
+                    Label_ArmingStatus.Foreground = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                    el_aussen.Stroke = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                    el_innen.Fill = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+
+                    BT_HS_HB.Background = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                    BT_XBoxRead.Background = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                }
+                /*
+                else
+                {
+                    Label_ArmingStatus.Content = "disarmed";
+                    Label_ArmingStatus.Foreground = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                    el_aussen.Stroke = new SolidColorBrush(Color.FromArgb(255, 67, 81, 89));
+                    el_innen.Fill = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                }
+                */
+            }
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+
+            vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
+            //Setze ArmingStatus auf GUI
+            GUIArming(false);
+
             ControllerThread.Abort();
+            HeartbeatThread.Abort();
         }
 
         private void TB_COMPort_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
