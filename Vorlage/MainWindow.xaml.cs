@@ -22,7 +22,7 @@ using System.Windows.Threading;
 using SharpDX;
 using SharpDX.XInput;
 using System.Xml.Serialization;
-
+// neuer Kommentar
 namespace Vorlage
 {
     /// <summary>
