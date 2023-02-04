@@ -37,9 +37,9 @@ namespace Vorlage
 
     public partial class MainWindow : Window
     {
-        // NICHT ÄNDERN
+        // NICHT ÄNDERN (Angepasst an reale Drohne)
         // ----------------------------
-        private vQuadroControl vmyQC;
+        private QuadroControl myQC;
         DelString DelStringObject;
         // ----------------------------
 
@@ -63,8 +63,8 @@ namespace Vorlage
         {
             // NICHT ÄNDERN
             // -------------------------------------------------
-            vmyQC = new vQuadroControl();
-            DelStringObject = new DelString(vSchickeHexString);
+            myQC = new QuadroControl();
+            DelStringObject = new DelString(SchickeHexString);
             // -------------------------------------------------
 
             // automatisch erstellte Methode für Form Designer
@@ -81,11 +81,11 @@ namespace Vorlage
 
         // NICHT ÄNDERN
         // ----------------------------------------------------------------------------------------------------------
-        public void vSchickeHexString(String hexString)
+        public void SchickeHexString(String hexString)
         {
             if (!Dispatcher.CheckAccess())
             { Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, DelStringObject, hexString); }
-            else { vmyQC.v_SchickeHexString(hexString); }
+            else { SchickeHexString(hexString); }
         }
 
         // ----------------------------------------------------------------------------------------------------------
@@ -101,7 +101,7 @@ namespace Vorlage
                 while (run)
                 {
                     // Verschickt einen HexString zum Hearbeat an den FC
-                    vSchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03");
+                    SchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03");
                     Thread.Sleep(1000);
                 }
             }
@@ -146,8 +146,8 @@ namespace Vorlage
                     // Sicherheitsfeature: Verschickt einen HexString mit Nullwerten, wenn der Xbox Controller disconnected wurde -> Drohne landet
                     if (!XBox.IsConnected)
                     {
-                        vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
-                        vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
+                        SchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+                        SchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
 
                         GUIArming(false); //Setzt ArmingStatus auf GUI to false
                         return; // soll nicht mehr weiterlaufen
@@ -191,18 +191,10 @@ namespace Vorlage
                     {
                         leftTriggerf = -1f;
                     }
-                    else
-                    {
-                        leftTriggerf = leftTriggerf * 0.4f + 0.6f; // Passt die Throttle Kurve an (BEI REALER DROHNE LÖSCHEN)
-                    }
 
                     if (rightTriggerf == 0f)
                     {
                         rightTriggerf = -1f;
-                    }
-                    else
-                    {
-                        rightTriggerf = rightTriggerf * 0.4f + 0.6f; // Passt die Throttle Kurve an (BEI REALER DROHNE LÖSCHEN)
                     }
 
                     // Übergibt dem FC nur den größeren Wert der beiden Trigger
@@ -218,12 +210,12 @@ namespace Vorlage
                     Pitch = QuadroControl.KonvertiereFloatZuHexString(leftThumbYf);
 
                     // Übergibt die Werte im HexString an den FC
-                    vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 " + Throttle + " " + Roll + " " + Pitch + " " + Yaw + " 00 00 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+                    SchickeHexString("3C 20 38 00 80 74 10 C4 00 00 " + Throttle + " " + Roll + " " + Pitch + " " + Yaw + " 00 00 00 00 " + Throttle + " 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
 
                     //Arming
                     if (myState.Gamepad.Buttons == GamepadButtonFlags.Start)
                     {
-                        vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 3F");
+                        SchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 3F");
                         GUIArming(true); //Setze ArmingStatus auf GUI
                     }
 
@@ -231,7 +223,7 @@ namespace Vorlage
 
                     if (myState.Gamepad.Buttons == GamepadButtonFlags.Back && leftTriggerf < threshold)
                     {
-                        vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
+                        SchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
                         GUIArming(false); //Setze ArmingStatus auf GUI
                     }
 
@@ -241,9 +233,9 @@ namespace Vorlage
                     if (myState.Gamepad.Buttons == GamepadButtonFlags.B)
                     {
                         // Übergibt einen Null HexString -> Drohne landet
-                        vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+                        SchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
                         // Übergibt einen HexString zum Disarmen -> Drohne disarmt
-                        vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
+                        SchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
 
                         GUIArming(false); //Setze ArmingStatus auf GUI
 
@@ -334,7 +326,7 @@ namespace Vorlage
             COMPortName = TB_COMPort.Text;
 
             //COM-Port verbinden
-            if (vmyQC.vVerbinde(COMPortName))
+            if (myQC.Verbinde(COMPortName))
             {
                 TB_COMPort.Text = TB_COMPort.Text + " verbunden"; // passt den text an
                 TB_COMPort.Background = new SolidColorBrush(Color.FromArgb(255, 128, 212, 98)); // stellt die Hintergrundfarbe auf grün
@@ -348,7 +340,7 @@ namespace Vorlage
         //Com-Port trennen Button
         private void BT_COMPortTrennen_Click(object sender, RoutedEventArgs e)
         {
-            if (vmyQC.vVerbindungTrennen())
+            if (myQC.VerbindungTrennen())
             {
                 TB_COMPort.Text = "COMPort getrennt"; // passt den text an
                 TB_COMPort.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)); // stellt die Hintergrundfarbe auf weiß
@@ -372,11 +364,11 @@ namespace Vorlage
         {
             //Handshake
 
-            vSchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00");
-            vSchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01");
-            vSchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03");
-            vSchickeHexString("3c 20 12 00 81 74 10 c4 00 00 41 00 c0 07 64 00 00 00");
-            vSchickeHexString("3c 20 12 00 5c 98 09 c4 00 00 41 00 d0 07 64 00 00 00");
+            SchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00");
+            SchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01");
+            SchickeHexString("3C 20 2F 00 0A DC D1 CA 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03");
+            SchickeHexString("3c 20 12 00 81 74 10 c4 00 00 41 00 c0 07 64 00 00 00");
+            SchickeHexString("3c 20 12 00 5c 98 09 c4 00 00 41 00 d0 07 64 00 00 00");
 
             //Heartbeat
 
@@ -407,9 +399,9 @@ namespace Vorlage
         // Stoppt die App beim schließen des Fensters
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            vSchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
+            SchickeHexString("3C 20 38 00 80 74 10 C4 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00");
 
-            vSchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
+            SchickeHexString("3C 20 0E 00 5A 98 09 C4 00 00 00 00 80 BF");
             //Setze ArmingStatus auf GUI
             GUIArming(false);
 
