@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>vKTCQuadroControl</name>
+    </assembly>
+    <members>
+        <member name="T:vKTCQuadroControl.Properties.Resources">
+            <summary>
+              Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
+            </summary>
+        </member>
+        <member name="P:vKTCQuadroControl.Properties.Resources.ResourceManager">
+            <summary>
+              Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+            </summary>
+        </member>
+        <member name="P:vKTCQuadroControl.Properties.Resources.Culture">
+            <summary>
+              Überschreibt die CurrentUICulture-Eigenschaft des aktuellen Threads für alle
+              Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
+            </summary>
+        </member>
+        <member name="P:vKTCQuadroControl.Properties.Resources.Logo_groß_transparent">
+            <summary>
+              Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:vKTCQuadroControl.Properties.Resources.Logo_klein">
+            <summary>
+              Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="F:vKTCQuadroControl.vGUI.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:vKTCQuadroControl.vGUI.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:vKTCQuadroControl.vGUI.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:vKTCQuadroControl.vQuadroControl.v_SchickeHexString(System.String)">
+            <summary>
+            Sendet den übergebenen HEX-String an den virtuellen Flighcontroller
+            </summary>
+            <param name="hexString">String der HEX-Zahlen getrennt mit Leerzeichen</param>
+        </member>
+        <member name="M:vKTCQuadroControl.vQuadroControl.vVerbinde(System.String)">
+            <summary>
+            Virtuelle Verbinde Funktion mit Übergabe COMPort-String
+            </summary>
+            <param name="comPort">der zu verbindende COM-Port z.B. "COM3"</param>
+            <returns>true - Verbindung erfolgreich, false - Verbindung gescheitert</returns>
+        </member>
+        <member name="M:vKTCQuadroControl.vQuadroControl.vVerbindungTrennen">
+            <summary>
+            Schließt den virtuellen COMPort
+            </summary>
+            <returns>Boolean true oder false</returns>
+        </member>
+        <member name="M:vKTCQuadroControl.vQuadroControl.vProgrammSchließen">
+            <summary>
+            Methode zum Schließen der Testumgebung
+            </summary>  
+        </member>
+    </members>
+</doc>

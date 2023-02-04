@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KTCQuadroControl</name>
+    </assembly>
+    <members>
+        <member name="T:KTCQuadroControl.QuadroControl">
+            <summary>
+            Klasse stellt Funktionen zur seriellen Kommunikation mit dem Flight-Controller bereit
+            </summary>
+        </member>
+        <member name="P:KTCQuadroControl.QuadroControl.Verbunden">
+            <summary>
+            Status der Seriellen Port Verbindung
+            </summary>
+        </member>
+        <member name="P:KTCQuadroControl.QuadroControl.SeriellerPort">
+            <summary>
+            Objekt des Seriellen Ports
+            </summary>
+        </member>
+        <member name="M:KTCQuadroControl.QuadroControl.#ctor">
+            <summary>
+            Konstruktor der Klasse
+            </summary>
+        </member>
+        <member name="M:KTCQuadroControl.QuadroControl.Verbinde(System.String)">
+            <summary>
+            Verbinde Funktion mit Übergabe COMPort-String
+            </summary>
+            <param name="COMPort">der zu verbindende COM-Port z.B. "COM3"</param>
+            <returns>true - Verbinden erfolgreich, false - Verbinden gescheitert</returns>
+        </member>
+        <member name="M:KTCQuadroControl.QuadroControl.Verbinde(System.String,System.Int32)">
+            <summary>
+            Verbinde Funktion mit Übergabe COMPort-String und BaudRate
+            </summary>
+            <param name="COMPort"> der zu verbindende COM-Port z.B. "COM3"</param>
+            <param name="_baudRate">Baudrate mit der die serielle Schnittstelle kommunizieren soll</param>
+            <returns>true - Verbinden erfolgreich, false - Verbinden gescheitert</returns>
+        </member>
+        <member name="M:KTCQuadroControl.QuadroControl.VerbindungTrennen">
+            <summary>
+            Schließt den COM-Port
+            </summary>
+            <returns>Boolean true oder false</returns>
+        </member>
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:KTCQuadroControl.QuadroControl.HoleAktuelleCOMPorts" ignoriert -->
+        <member name="M:KTCQuadroControl.QuadroControl.SchickeHexString(System.String)">
+            <summary>
+            Sendet den übergebenen HEX-String an den Flightcontroller
+            </summary>
+            <param name="hexStr">String der HEX-Zahlen getrennt mit Leerzeichen</param>
+        </member>
+        <member name="M:KTCQuadroControl.QuadroControl.KonvertiereFloatZuHexString(System.Single)">
+            <summary>
+            Wandelt einen Float-Wert in einen Hex-String um
+            </summary>
+            <param name="FloatWert"></param>
+            <returns>HexString der Form "XX XX XX XX"</returns>
+        </member>
+        <member name="M:KTCQuadroControl.QuadroControl.AppendCheckSumCRC(System.Byte[])">
+            <summary>
+            statische Funktion zur Berechnung der crc8-Checksumme eines Byte Arrays
+            </summary>
+            <param name="bytesToCalc"></param>
+            <returns>Byte-Array von denen die Checksumme berechnet werden soll und die angehängte Checksumme</returns>
+        </member>
+    </members>
+</doc>
